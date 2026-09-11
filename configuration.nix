@@ -17,6 +17,7 @@
     google-chrome
     hyprlauncher
     ripgrep
+    jq
   ];
 
   programs.hyprland = {
