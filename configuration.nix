@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, herdr-nix, ... }:
 
 {
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -18,6 +18,7 @@
     hyprlauncher
     ripgrep
     jq
+    herdr-nix.packages.${pkgs.stdenv.hostPlatform.system}.herdr
   ];
 
   programs.hyprland = {

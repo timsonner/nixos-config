@@ -2,6 +2,8 @@
 
 NixOS 26.05 (Yarara) configuration for host `nixos` (Hyprland on QEMU).
 
+Hyprland lives in `hypr/hyprland.lua` (copy of `~/.config/hypr/hyprland.lua`).
+
 ## Apply
 
 ```bash
