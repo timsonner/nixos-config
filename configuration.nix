@@ -15,6 +15,8 @@
     gh
     vim
     google-chrome
+    hyprlauncher
+    ripgrep
   ];
 
   programs.hyprland = {
