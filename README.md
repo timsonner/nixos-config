@@ -5,7 +5,12 @@ NixOS 26.05 (Yarara) configuration for host `nixos`.
 Originally written for a QEMU VM; now targeting the Lenovo laptop
 (`20W4002HUS`, Intel Tiger Lake, systemd-boot + NVMe).
 
-Hyprland lives in `hypr/hyprland.lua` (copy of `~/.config/hypr/hyprland.lua`).
+Hyprland lives in `hypr/hyprland.lua`. On this machine it is the live
+config via a symlink:
+
+```bash
+ln -sfn ~/nixos-config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
+```
 
 `herdr` comes from the [herdr-nix](https://github.com/herdrdev/herdr-nix)
 flake input, which wraps the GitHub release binaries.
