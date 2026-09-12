@@ -18,6 +18,11 @@
     vim
     google-chrome
     hyprlauncher
+    (pkgs.writeShellApplication {
+      name = "hypr-show-keybinds";
+      runtimeInputs = [ jq hyprlauncher ];
+      text = builtins.readFile ./hypr/show-keybinds.sh;
+    })
     ripgrep
     jq
     herdr-nix.packages.${pkgs.stdenv.hostPlatform.system}.herdr
