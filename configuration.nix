@@ -5,7 +5,10 @@
 { config, pkgs, herdr-nix, ... }:
 
 {
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    GTK_THEME = "Adwaita:dark";
+  };
 
   environment.systemPackages = with pkgs; [
     kitty
@@ -25,11 +28,40 @@
     })
     ripgrep
     jq
+    gnome-themes-extra
+    adwaita-icon-theme
     herdr-nix.packages.${pkgs.stdenv.hostPlatform.system}.herdr
   ];
 
   # Trash, mounts, and network locations in Nautilus.
   services.gvfs.enable = true;
+
+  # Dark theme for GTK3/4 and libadwaita apps (Nautilus, etc.).
+  programs.dconf.enable = true;
+  programs.dconf.profiles.user.databases = [
+    {
+      settings."org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        gtk-theme = "Adwaita-dark";
+        icon-theme = "Adwaita";
+      };
+    }
+  ];
+
+  environment.etc = {
+    "xdg/gtk-3.0/settings.ini".text = ''
+      [Settings]
+      gtk-application-prefer-dark-theme=1
+      gtk-theme-name=Adwaita-dark
+      gtk-icon-theme-name=Adwaita
+    '';
+    "xdg/gtk-4.0/settings.ini".text = ''
+      [Settings]
+      gtk-application-prefer-dark-theme=1
+      gtk-theme-name=Adwaita-dark
+      gtk-icon-theme-name=Adwaita
+    '';
+  };
 
   programs.hyprland = {
     enable = true;
