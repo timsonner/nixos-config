@@ -48,6 +48,7 @@ local menu        = "hyprlauncher"
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("uwsm-app -- waybar || waybar")
+  hl.exec_cmd("uwsm-app -- hyprpaper || hyprpaper")
 end)
 
 

@@ -31,6 +31,7 @@
     gnome-themes-extra
     adwaita-icon-theme
     waybar
+    hyprpaper
     pavucontrol
     btop
     networkmanagerapplet

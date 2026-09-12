@@ -10,11 +10,14 @@ config via a symlink:
 
 ```bash
 ln -sfn ~/nixos-config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
+ln -sfn ~/nixos-config/hypr/hyprlauncher.conf ~/.config/hypr/hyprlauncher.conf
+ln -sfn ~/nixos-config/hypr/hyprpaper.conf ~/.config/hypr/hyprpaper.conf
 ln -sfn ~/nixos-config/waybar ~/.config/waybar
 ```
 
 Waybar is the Omarchy-style top bar (workspaces, clock, network, audio,
-battery). Toggle it with Super+Shift+Space.
+battery). Toggle it with Super+Shift+Space. Wallpaper is `hypr/wallpaper.jpg`
+via hyprpaper.
 
 `herdr` comes from the [herdr-nix](https://github.com/herdrdev/herdr-nix)
 flake input, which wraps the GitHub release binaries.
