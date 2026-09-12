@@ -8,7 +8,7 @@ Originally written for a QEMU VM; now targeting the Lenovo laptop
 Hyprland lives in `hypr/hyprland.lua` (copy of `~/.config/hypr/hyprland.lua`).
 
 `herdr` comes from the [herdr-nix](https://github.com/herdrdev/herdr-nix)
-flake input (prebuilt release binaries, Cachix cache `herdr`).
+flake input, which wraps the GitHub release binaries.
 
 ## Apply
 

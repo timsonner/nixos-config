@@ -84,13 +84,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    extra-substituters = [ "https://herdr.cachix.org" ];
-    extra-trusted-public-keys = [
-      "herdr.cachix.org-1:3nH7IStRsS0ASfdonA0DCRR2ZrSCeWitZ7Kwew0cR4I="
-    ];
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   # environment.systemPackages = with pkgs; [
