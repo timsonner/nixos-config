@@ -264,12 +264,27 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
-local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
--- closeWindowBind:set_enabled(false)
+hl.bind(mainMod .. " + W", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
+
+-- Universal copy/paste/cut (Omarchy). CTRL/SHIFT+Insert works in terminals and GUI apps.
+-- send_shortcut can leave synthetic keys stuck; send down/up ourselves.
+-- https://github.com/hyprwm/Hyprland/discussions/14099
+local function send_shortcut_once(mods, key)
+    return function()
+        hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "down", window = "activewindow" }))
+        hl.timer(function()
+            hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up", window = "activewindow" }))
+        end, { timeout = 50, type = "oneshot" })
+    end
+end
+
+hl.bind(mainMod .. " + C", send_shortcut_once("CTRL", "Insert"))
+hl.bind(mainMod .. " + V", send_shortcut_once("SHIFT", "Insert"))
+hl.bind(mainMod .. " + X", send_shortcut_once("CTRL", "X"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + ALT + SHIFT + F", hl.dsp.exec_cmd(fileManager .. " --new-window"))
