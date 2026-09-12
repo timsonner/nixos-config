@@ -24,7 +24,7 @@
   programs.hyprland = {
     enable = true;
     withUWSM = true;
-    xwayland.enable = true;  
+    xwayland.enable = true;
   };
 
   services.displayManager.sddm.enable = true;
@@ -35,10 +35,9 @@
       ./hardware-configuration.nix
     ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
-  boot.loader.grub.useOSProber = true;
+  # This machine is a Lenovo laptop (EFI), not the QEMU VM the repo started on.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -85,8 +84,13 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   
-  nix.settings.experimental-features = [
-"nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    extra-substituters = [ "https://herdr.cachix.org" ];
+    extra-trusted-public-keys = [
+      "herdr.cachix.org-1:3nH7IStRsS0ASfdonA0DCRR2ZrSCeWitZ7Kwew0cR4I="
+    ];
+  };
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   # environment.systemPackages = with pkgs; [
