@@ -30,8 +30,27 @@
     jq
     gnome-themes-extra
     adwaita-icon-theme
+    waybar
+    pavucontrol
+    btop
+    networkmanagerapplet
     herdr-nix.packages.${pkgs.stdenv.hostPlatform.system}.herdr
   ];
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+  ];
+
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+  };
+
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
 
   # Trash, mounts, and network locations in Nautilus.
   services.gvfs.enable = true;

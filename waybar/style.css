@@ -1,0 +1,88 @@
+@define-color background #111111;
+@define-color foreground #eeeeee;
+
+* {
+  background-color: @background;
+  color: @foreground;
+
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: "JetBrainsMono Nerd Font", "JetBrainsMonoNF", sans-serif;
+  font-size: 12px;
+}
+
+.modules-left {
+  margin-left: 8px;
+}
+
+.modules-right {
+  margin-right: 8px;
+}
+
+#workspaces button {
+  all: initial;
+  padding: 0 6px;
+  margin: 0 1.5px;
+  min-width: 9px;
+  color: @foreground;
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
+}
+
+#workspaces button.active {
+  color: @foreground;
+}
+
+#cpu,
+#battery,
+#pulseaudio,
+#custom-launcher {
+  min-width: 12px;
+  margin: 0 7.5px;
+}
+
+#tray {
+  margin-right: 16px;
+}
+
+#bluetooth {
+  margin-right: 17px;
+}
+
+#network {
+  margin-right: 13px;
+}
+
+#custom-expand-icon {
+  margin-right: 18px;
+}
+
+tooltip {
+  padding: 4px 8px;
+  background: @background;
+  color: @foreground;
+}
+
+#clock {
+  margin-left: 8.75px;
+  font-weight: 700;
+}
+
+#battery.warning {
+  color: #e5c07b;
+}
+
+#battery.critical:not(.charging) {
+  color: #e06c75;
+}
+
+#pulseaudio.muted {
+  color: #7a7a7a;
+}
+
+#network.disconnected {
+  color: #7a7a7a;
+}

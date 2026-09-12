@@ -10,7 +10,11 @@ config via a symlink:
 
 ```bash
 ln -sfn ~/nixos-config/hypr/hyprland.lua ~/.config/hypr/hyprland.lua
+ln -sfn ~/nixos-config/waybar ~/.config/waybar
 ```
+
+Waybar is the Omarchy-style top bar (workspaces, clock, network, audio,
+battery). Toggle it with Super+Shift+Space.
 
 `herdr` comes from the [herdr-nix](https://github.com/herdrdev/herdr-nix)
 flake input, which wraps the GitHub release binaries.

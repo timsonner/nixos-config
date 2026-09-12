@@ -46,14 +46,9 @@ local menu        = "hyprlauncher"
 
 -- See https://wiki.hypr.land/Configuring/Basics/Autostart/
 
--- Autostart necessary processes (like notifications daemons, status bars, etc.)
--- Or execute your favorite apps at launch like this:
---
--- hl.on("hyprland.start", function () 
---   hl.exec_cmd(terminal)
---   hl.exec_cmd("nm-applet")
---   hl.exec_cmd("waybar & hyprpaper & firefox")
--- end)
+hl.on("hyprland.start", function()
+  hl.exec_cmd("uwsm-app -- waybar || waybar")
+end)
 
 
 -------------------------------
@@ -278,6 +273,7 @@ bind(mainMod .. " + K", hl.dsp.exec_cmd("hypr-show-keybinds || sh " .. os.getenv
 bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"), "Exit Hyprland")
 bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager), "File manager")
 bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu), "Launcher")
+bind(mainMod .. " + SHIFT + SPACE", hl.dsp.exec_cmd("pkill waybar || waybar"), "Toggle bar")
 bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd(browser), "Browser")
 bind(mainMod .. " + SHIFT + ALT + B", hl.dsp.exec_cmd(browser .. " --incognito"), "Browser (private)")
 bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd(fileManager), "File manager")
