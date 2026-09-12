@@ -36,6 +36,7 @@ hl.monitor({
 -- Set programs that you use
 local terminal    = "foot"
 local fileManager = "nautilus"
+local browser     = "google-chrome"
 local menu        = "hyprlauncher"
 
 
@@ -264,11 +265,15 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + SHIFT + RETURN", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + W", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd(browser))
+hl.bind(mainMod .. " + SHIFT + ALT + B", hl.dsp.exec_cmd(browser .. " --incognito"))
+hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + ALT + SHIFT + F", hl.dsp.exec_cmd(fileManager .. " --new-window"))
 
 -- Universal copy/paste/cut (Omarchy). CTRL/SHIFT+Insert works in terminals and GUI apps.
 -- send_shortcut can leave synthetic keys stuck; send down/up ourselves.
@@ -285,17 +290,31 @@ end
 hl.bind(mainMod .. " + C", send_shortcut_once("CTRL", "Insert"))
 hl.bind(mainMod .. " + V", send_shortcut_once("SHIFT", "Insert"))
 hl.bind(mainMod .. " + X", send_shortcut_once("CTRL", "X"))
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
-hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + ALT + SHIFT + F", hl.dsp.exec_cmd(fileManager .. " --new-window"))
-hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
-hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 
--- Move focus with mainMod + arrow keys
-hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
+-- Window tiling / positioning (Omarchy tiling-v2)
+hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
+hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
+hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+hl.bind(mainMod .. " + CTRL + F", hl.dsp.window.fullscreen_state({ internal = 0, client = 2 }))
+hl.bind(mainMod .. " + ALT + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
+hl.bind(mainMod .. " + O", function()
+    hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
+    hl.dispatch(hl.dsp.window.pin({ action = "toggle" }))
+end)
+hl.bind(mainMod .. " + L", function()
+    local layout = hl.get_config("general.layout")
+    if layout == "master" then
+        hl.config({ general = { layout = "dwindle" } })
+    else
+        hl.config({ general = { layout = "master" } })
+    end
+end)
+
+hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "l" }))
+hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "r" }))
+hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "u" }))
+hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "d" }))
 
 -- Switch / move windows with SUPER + [1-9; 0] on the physical number row
 -- (Omarchy-style keycodes so SHIFT+number still hits 1-0, not !@#).
@@ -306,17 +325,70 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + ALT + " .. code,    hl.dsp.window.move({ workspace = i, follow = false }))
 end
 
--- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mainMod .. " + ALT + S",   hl.dsp.window.move({ workspace = "special:magic", follow = false }))
 
--- Scroll through existing workspaces with mainMod + scroll
+hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mainMod .. " + CTRL + TAB",  hl.dsp.focus({ workspace = "previous" }))
+
+hl.bind(mainMod .. " + SHIFT + ALT + left",  hl.dsp.workspace.move({ monitor = "l" }))
+hl.bind(mainMod .. " + SHIFT + ALT + right", hl.dsp.workspace.move({ monitor = "r" }))
+hl.bind(mainMod .. " + SHIFT + ALT + up",    hl.dsp.workspace.move({ monitor = "u" }))
+hl.bind(mainMod .. " + SHIFT + ALT + down",  hl.dsp.workspace.move({ monitor = "d" }))
+
+hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.swap({ direction = "l" }))
+hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.swap({ direction = "r" }))
+hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.swap({ direction = "u" }))
+hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.swap({ direction = "d" }))
+
+hl.bind("ALT + TAB", function()
+    hl.dispatch(hl.dsp.window.cycle_next())
+    hl.dispatch(hl.dsp.window.bring_to_top())
+end)
+hl.bind("ALT + SHIFT + TAB", function()
+    hl.dispatch(hl.dsp.window.cycle_next({ next = false }))
+    hl.dispatch(hl.dsp.window.bring_to_top())
+end)
+
+hl.bind("CTRL + ALT + TAB",         hl.dsp.focus({ monitor = "+1" }))
+hl.bind("CTRL + ALT + SHIFT + TAB", hl.dsp.focus({ monitor = "-1" }))
+
+-- Resize: code:20 = minus, code:21 = equal
+hl.bind(mainMod .. " + code:20",               hl.dsp.window.resize({ x = -100, y = 0, relative = true }))
+hl.bind(mainMod .. " + code:21",               hl.dsp.window.resize({ x = 100,  y = 0, relative = true }))
+hl.bind(mainMod .. " + SHIFT + code:20",       hl.dsp.window.resize({ x = 0, y = -100, relative = true }))
+hl.bind(mainMod .. " + SHIFT + code:21",       hl.dsp.window.resize({ x = 0, y = 100,  relative = true }))
+hl.bind(mainMod .. " + ALT + code:20",         hl.dsp.window.resize({ x = -25, y = 0, relative = true }))
+hl.bind(mainMod .. " + ALT + code:21",         hl.dsp.window.resize({ x = 25,  y = 0, relative = true }))
+hl.bind(mainMod .. " + SHIFT + ALT + code:20", hl.dsp.window.resize({ x = 0, y = -25, relative = true }))
+hl.bind(mainMod .. " + SHIFT + ALT + code:21", hl.dsp.window.resize({ x = 0, y = 25,  relative = true }))
+hl.bind(mainMod .. " + CTRL + code:20",        hl.dsp.window.resize({ x = -300, y = 0, relative = true }))
+hl.bind(mainMod .. " + CTRL + code:21",        hl.dsp.window.resize({ x = 300,  y = 0, relative = true }))
+hl.bind(mainMod .. " + CTRL + SHIFT + code:20",hl.dsp.window.resize({ x = 0, y = -300, relative = true }))
+hl.bind(mainMod .. " + CTRL + SHIFT + code:21",hl.dsp.window.resize({ x = 0, y = 300,  relative = true }))
+
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
-
--- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
+hl.bind(mainMod .. " + G",         hl.dsp.group.toggle())
+hl.bind(mainMod .. " + ALT + G",   hl.dsp.window.move({ out_of_group = true }))
+hl.bind(mainMod .. " + ALT + left",  hl.dsp.window.move({ into_group = "l" }))
+hl.bind(mainMod .. " + ALT + right", hl.dsp.window.move({ into_group = "r" }))
+hl.bind(mainMod .. " + ALT + up",    hl.dsp.window.move({ into_group = "u" }))
+hl.bind(mainMod .. " + ALT + down",  hl.dsp.window.move({ into_group = "d" }))
+hl.bind(mainMod .. " + ALT + TAB",         hl.dsp.group.next())
+hl.bind(mainMod .. " + ALT + SHIFT + TAB", hl.dsp.group.prev())
+hl.bind(mainMod .. " + CTRL + left",  hl.dsp.group.prev())
+hl.bind(mainMod .. " + CTRL + right", hl.dsp.group.next())
+hl.bind(mainMod .. " + ALT + mouse_down", hl.dsp.group.next())
+hl.bind(mainMod .. " + ALT + mouse_up",   hl.dsp.group.prev())
+for index = 1, 5 do
+    hl.bind(mainMod .. " + ALT + code:" .. (index + 9), hl.dsp.group.active({ index = index }))
+end
 
 -- Laptop multimedia keys for volume and LCD brightness
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
