@@ -9,6 +9,8 @@
 
   environment.systemPackages = with pkgs; [
     kitty
+    foot
+    nautilus
     opencode
     grok-build
     git
@@ -20,6 +22,9 @@
     jq
     herdr-nix.packages.${pkgs.stdenv.hostPlatform.system}.herdr
   ];
+
+  # Trash, mounts, and network locations in Nautilus.
+  services.gvfs.enable = true;
 
   programs.hyprland = {
     enable = true;
