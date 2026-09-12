@@ -59,6 +59,8 @@ end)
 
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+-- hyprlauncher wraps Terminal=true .desktop files (vim, btop) with $TERMINAL.
+hl.env("TERMINAL", "foot")
 
 
 -----------------------
