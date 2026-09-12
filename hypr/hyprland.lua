@@ -282,12 +282,13 @@ hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
 
--- Switch workspaces with mainMod + [0-9]
--- Move active window to a workspace with mainMod + SHIFT + [0-9]
+-- Switch / move windows with SUPER + [1-9; 0] on the physical number row
+-- (Omarchy-style keycodes so SHIFT+number still hits 1-0, not !@#).
 for i = 1, 10 do
-    local key = i % 10 -- 10 maps to key 0
-    hl.bind(mainMod .. " + " .. key,             hl.dsp.focus({ workspace = i}))
-    hl.bind(mainMod .. " + SHIFT + " .. key,     hl.dsp.window.move({ workspace = i }))
+    local code = "code:" .. (9 + i) -- 1 → code:10 … 0 → code:19
+    hl.bind(mainMod .. " + " .. code,                  hl.dsp.focus({ workspace = i }))
+    hl.bind(mainMod .. " + SHIFT + " .. code,          hl.dsp.window.move({ workspace = i, follow = true }))
+    hl.bind(mainMod .. " + SHIFT + ALT + " .. code,    hl.dsp.window.move({ workspace = i, follow = false }))
 end
 
 -- Example special workspace (scratchpad)
